@@ -14,6 +14,8 @@ You should at minimum edit the helper functions.
 You may not necessarily have to edit the main function.
 '''
 
+import time
+
 last_score = 0
 last_total = 0
 score_save = "scores.txt"
@@ -23,21 +25,26 @@ def play_quiz(filename):
     f = open(filename)
     print (f.readline())
     input("What is the term? ")
-    
+
 
 
     return
 
 
 def show_scores():
-    print("shows_scores function called")
+    f = open("scores.txt")
+    for line in f:
+        print(line)
+        time.sleep(0.2)
+
     
 
 def add_scores(new_score):
-        print("add_scores function called with score to add a parameter")
-        username = input("what is your username?: ")
-        with open("scores.txt", "a") as f:
-            f.write(username, new_score)
+    username = input("what is your username?: ")
+    newline = f"{username}: {new_score}"
+    with open("scores.txt", "a") as f:
+        f.write(newline)
+
 
 
 
