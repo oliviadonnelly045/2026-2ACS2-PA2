@@ -26,10 +26,6 @@ def play_quiz(filename):
     last_score = 0
     last_total = 0
 
-    if not (filename.end(".txt") or filename.end(".csv")):
-        print ("Please enter a .txt or .csv file")
-        return
-    
     if not os.path.exists(filename):
         print(f"{filename} not found. Please create it first and try again.")
         return
@@ -61,7 +57,7 @@ def play_quiz(filename):
     print("You got", correct, "out of", total)
     last_score = correct
     last_total = total
-
+    return
 
 def show_scores():
     if not os.path.exists(score_save):
@@ -87,8 +83,10 @@ def show_scores():
         print()
 
 
-def add_scores():
+def add_scores(new_score):
+    print("add_scores function called with score to add a parameter")
     global last_score, last_total
+
 
     if last_total == 0:
         print("Play a quiz first.")
@@ -214,6 +212,8 @@ def main():
                     file_url = quiz_fn+".csv"
                 else: #text file
                     file_url = quiz_fn+".txt"
+                user_score = play_quiz(file_url) #int score from game
+                add_scores(user_score)
                 play_quiz(file_url) #creating file name to pass into open function
                 add_scores()
             elif first_choice in h_options: #looking at previous scores
