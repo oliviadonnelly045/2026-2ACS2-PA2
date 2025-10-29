@@ -1,17 +1,22 @@
 '''
-Make a flashcard review game that reads through a file
-where each line consists of a term and its definition.
+Author: Olivia Donnelly
+Program title: Flashcard Review
+Description: A Program that reads through a file where each line 
+consists of a term and its definition. It allows the user attach 
+a file to play, log their username, and long their score in another 
+file and print the file.
 
-An example text file and an example CSV file have been provided to you.
+WWW: I was able to create a working program that allows the user to 
+load a file with terms and definitions to be quizzed on. I was able 
+to make it so the user could log their score and username in a .txt 
+file that could be printed to show all player score history.
 
-A masterful program includes the ability to create a new file
-and load your own terms/definitions into it, before running the quiz on that file.
-
-Save game records to a different file. Log username and high score.
-Allow the user the option to view this file by printing it to the console.
-
-You should at minimum edit the helper functions.
-You may not necessarily have to edit the main function.
+EBI: I had a hard time figuring out how to quiz the user on more than 
+one term/definition without printing the whole list. Eventually, I 
+figured it out and learned how to fix this problem in the future. If 
+I had more time, I would have created a masterful program, by giving 
+the user the ability to create their own file and load their own 
+terms/definitions into it and then quiz them based on that file.
 '''
 
 import time
@@ -21,14 +26,48 @@ last_total = 0
 score_save = "scores.txt"
 
 def play_quiz(filename):
-    print(f"play_quiz function called with {filename}")
-    f = open(filename)
-    print (f.readline())
-    input("What is the term? ")
+    f = open(filename, "r")
+    lines = f.readlines()
+    f.close()
 
+    term_def = []
+    for line in lines[1:]:
+        line = line.strip()
+        if line == "":
+            continue
 
+        if "," in line:
+            parts = line.split(",")
+        elif ":" in line:
+            parts = line.split(":")
+        elif " - " in line:
+            parts = line.split(" - ")
+        else:
+            continue
 
-    return
+        if len(parts) >= 2:
+            term = parts[0].strip()
+            definition = parts[1].strip()
+            term_def.append((term, definition))
+
+    if len(term_def) == 0:
+        print("No valid questions found in file.")
+        return 0
+
+    score = 0
+    total = len(term_def)
+    
+    for term, definition in term_def:
+        print("Definition:\n", definition)
+        answer = input("\nWhat is the term? ").strip().lower()
+    if answer == term.lower():
+        print("Correct\n")
+        score = score + 1
+    else:
+        print("Incorrect. The answer was", term, "\n")
+    
+    print("Your score:", score, "/", total)
+    return score
 
 
 def show_scores():
@@ -36,14 +75,16 @@ def show_scores():
     for line in f:
         print(line)
         time.sleep(0.2)
+    f.close()
 
     
 
 def add_scores(new_score):
     username = input("what is your username?: ")
-    newline = f"{username}: {new_score}"
-    with open("scores.txt", "a") as f:
-        f.write(newline)
+    newline = f"{username}: {new_score}\n"
+    f = open("scores.txt", "a")
+    f.write(newline)
+    f.close()
 
 
 
