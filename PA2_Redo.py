@@ -26,7 +26,10 @@ last_total = 0
 score_save = "scores.txt"
 
 def play_quiz(filename):
-    f = open(filename, "r")
+    try:
+        f = open(filename, "r")
+    except FileNotFoundError:
+        f = create_file(filename)
     lines = f.readlines()
     f.close()
 
@@ -60,14 +63,42 @@ def play_quiz(filename):
     for term, definition in term_def:
         print("Definition:\n", definition)
         answer = input("\nWhat is the term? ").strip().lower()
-    if answer == term.lower():
-        print("Correct\n")
-        score = score + 1
-    else:
-        print("Incorrect. The answer was", term, "\n")
+        if answer == term.lower():
+            print("Correct\n")
+            score = score + 1
+        else:
+            print("Incorrect. The answer was", term, "\n")
+        keep_going = input("\nWould you like to keep going? (Y/N)").strip().lower()
+        valid_option = ["y", "yes", "n", "no"]
+        while keep_going not in valid_option:
+            print("Enter a valid option")
+            keep_going = input("\nWould you like to keep going? (Y/N)").strip().lower()
+            valid_option = ["y", "yes", "n", "no"]
+        if keep_going == "n":
+            break
+
     
     print("Your score:", score, "/", total)
     return score
+
+def create_file(filename):
+    newfile = open(filename, "a")
+    print("\nEnter your flashcards. Leave a term empty to stop.\n")
+    while True:
+        term = input("Term: ").strip()
+        if term == "":
+            break
+        definition = input("Definition: ").strip()
+        if definition == "":
+            print("Definition cannot be blank.")
+            continue
+        newfile.write(term + "," + definition + "\n")
+    if len(newfile) == 0:
+        print("No cards added.")
+        return
+    
+    print("Saved", len(newfile), "cards to", filename, "\n")
+    return newfile
 
 
 def show_scores():
@@ -128,8 +159,6 @@ def main():
                     file_url = quiz_fn+".txt"
                 user_score = play_quiz(file_url) #int score from game
                 add_scores(user_score)
-                play_quiz(file_url) #creating file name to pass into open function
-                add_scores()
             elif first_choice in h_options: #looking at previous scores
                 show_scores()
             elif first_choice in e_options: #exiting
