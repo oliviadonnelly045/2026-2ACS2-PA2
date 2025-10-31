@@ -81,26 +81,6 @@ def play_quiz(filename):
     print("Your score:", score, "/", total)
     return score
 
-def create_file(filename):
-    newfile = open(filename, "a")
-    print("\nEnter your flashcards. Leave a term empty to stop.\n")
-    while True:
-        term = input("Term: ").strip()
-        if term == "":
-            break
-        definition = input("Definition: ").strip()
-        if definition == "":
-            print("Definition cannot be blank.")
-            continue
-        newfile.write(term + "," + definition + "\n")
-    if len(newfile) == 0:
-        print("No cards added.")
-        return
-    
-    print("Saved", len(newfile), "cards to", filename, "\n")
-    return newfile
-
-
 def show_scores():
     f = open("scores.txt")
     for line in f:
@@ -145,7 +125,12 @@ def main():
                 print(f"- {item}")
             first_choice = input("what would you like to do?\n> ").lower().strip()
             if first_choice in p_options: #playing game
-                quiz_fn = input("what is the name of your file?\n> ").lower().strip()
+                quiz_fn = input("what is the name of your file? (periodic_table\n> ").lower().strip()
+                valid_option = ["periodic_table"]
+                while quiz_fn not in valid_option:
+                    print("Enter a valid option")
+                    quiz_fn = input("what is the name of your file? (periodic_table)\n> ").lower().strip()
+                    valid_option = ["periodic_table"]
                 quiz_ext = input("is it a .txt or .csv file?\n> ").lower().strip()
                 while quiz_ext not in file_types: #error if they add something other than txt or csv
                     print_error()

@@ -2,3 +2,5 @@ sunny: 3
 isis: 2
 olivia: 2
 Katherine: 1
+olivia: 1
+olivi: 1
