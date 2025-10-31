@@ -1,6 +1,6 @@
 '''
 Author: Olivia Donnelly
-Program title: Flashcard Review
+Program title: Flashcard Review Game
 Description: A Program that reads through a file where each line 
 consists of a term and its definition. It allows the user attach 
 a file to play, log their username, and long their score in another 
