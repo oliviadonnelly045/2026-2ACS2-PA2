@@ -4,3 +4,5 @@ olivia: 2
 Katherine: 1
 olivia: 1
 olivi: 1
+k: 1
+K: 1
